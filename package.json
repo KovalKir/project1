@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "express": "^4.18.1",
+    "prom-client": "^14.0.1"
+  },
+  "name": "monitoring",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KovalKir/project1.git"
+  },
+  "author": "Kir Koval <kirill@genesislab.net>",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/KovalKir/project1/issues"
+  },
+  "homepage": "https://github.com/KovalKir/project1#readme",
+  "description": ""
+}
