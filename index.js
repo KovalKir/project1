@@ -8,7 +8,7 @@ const exporter = express();
 
 const metrics = require('./metrics')
 
-const port = 9200;
+const port = 9500;
 const serverIP = '0.0.0.0';
 
 const registry = new client.Registry();
