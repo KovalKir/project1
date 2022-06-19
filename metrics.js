@@ -70,11 +70,13 @@ function checkValidatorStatus (registry) {
                     return;
                 }
 
-                let status;
+                let status = String (stdout);
 
-                stdout == 'true' ? status = 1 : status = 0;
+                status = status[0] + status[1] + status[2] + status[3];
+                
+                status == 'true' ? status = 1 : status = 0;
                 gauge.set(status);
-                console.log (gauge);
+
             })
     }
     
