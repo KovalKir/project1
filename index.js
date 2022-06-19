@@ -6,7 +6,7 @@ const express = require('express');
 
 const exporter = express();
 
-const metrics = require('./metrics')
+const metrics = require('./metrics');
 
 const port = 9500;
 const serverIP = '0.0.0.0';
@@ -24,7 +24,7 @@ exporter.get('/metrics', async (req, res, next) => {
     next();
   });
 
-exporter.listen(port,serverIP, () => console.log('Working'))
+exporter.listen(port,serverIP, () => console.log('Working'));
 
 
 

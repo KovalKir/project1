@@ -32,27 +32,58 @@ function checkValidatorBalance (registry) {
 
     function checkBalance () { 
         exec(`/usr/local/bin/fn show | grep -w '"bond":' | sed 's/.$//' | sed 's/^.*: //'`, 
-        async (error, stdout, stderr) => {
-            if (error) {
-                console.log(`error: ${error.message}`);
-                return;
-            }
-            if (stderr) {
-                console.log(`stderr: ${stderr}`);
-                return;
-            }
+            async (error, stdout, stderr) => {
+                if (error) {
+                    console.log(`error: ${error.message}`);
+                    return;
+                }
+                if (stderr) {
+                    console.log(`stderr: ${stderr}`);
+                    return;
+                }
 
-            let balance = Number(stdout) / 100000;
-            gauge.set(balance);
-        })
+                let balance = Number(stdout) / 100000;
+                gauge.set(balance);
+            })
     }
     
-
     setInterval(checkBalance, 5000);
+
+}
+
+function checkValidatorStatus (registry) {
+    const gauge = new client.Gauge({
+        name: 'validator_status',
+        help: 'Validator Online Status (1 = online, 0 = offline)',
+        registers: [registry],
+    });
+
+    function checkStatus () { 
+        exec(`/usr/local/bin/fn show | grep -w "is_online" | sed 's/.$//' | sed 's/^.*: //'`, 
+            async (error, stdout, stderr) => {
+                if (error) {
+                    console.log(`error: ${error.message}`);
+                    return;
+                }
+                if (stderr) {
+                    console.log(`stderr: ${stderr}`);
+                    return;
+                }
+
+                let status;
+
+                stdout == 'true' ? status = 1 : status = 0;
+                gauge.set(status);
+                console.log (gauge);
+            })
+    }
+    
+    setInterval(checkStatus, 5000);
 
 }
 
 module.exports = (registry) => {
     setMetricGauge(registry);
     checkValidatorBalance (registry);
+    checkValidatorStatus (registry);
 };
