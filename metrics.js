@@ -42,7 +42,7 @@ function checkValidatorBalance (registry) {
                     return;
                 }
 
-                let balance = Number(stdout) / 100000;
+                let balance = Number(stdout) / 1000000;
                 gauge.set(balance);
             })
     }
@@ -103,7 +103,7 @@ function checkVotingPower (registry) {
                     return;
                 }
 
-                let stake = Number(stdout) / 100000;
+                let stake = Number(stdout) / 1000000;
                 gauge.set(stake);
 
             })
@@ -132,7 +132,7 @@ function checkAvaliableRewards (registry) {
                     return;
                 }
 
-                let rewards = Number(stdout) / 100000;
+                let rewards = Number(stdout) / 1000000;
                 gauge.set(rewards);
 
             })
