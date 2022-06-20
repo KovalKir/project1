@@ -84,8 +84,68 @@ function checkValidatorStatus (registry) {
 
 }
 
+function checkVotingPower (registry) {
+    const gauge = new client.Gauge({
+        name: 'validator_voting_power',
+        help: 'Total Stake (FRA)',
+        registers: [registry],
+    });
+
+    function checkTotalStake () { 
+        exec(`/usr/local/bin/fn show | grep -w '"voting_power":' | sed 's/.$//' | sed 's/^.*: //'`, 
+            async (error, stdout, stderr) => {
+                if (error) {
+                    console.log(`error: ${error.message}`);
+                    return;
+                }
+                if (stderr) {
+                    console.log(`stderr: ${stderr}`);
+                    return;
+                }
+
+                let stake = Number(stdout) / 100000;
+                gauge.set(stake);
+
+            })
+    }
+    
+    setInterval(checkTotalStake, 5000);
+
+}
+
+function checkAvaliableRewards (registry) {
+    const gauge = new client.Gauge({
+        name: 'validator_rewards',
+        help: 'Avaliable Rewards (FRA)',
+        registers: [registry],
+    });
+
+    function checkRewards () { 
+        exec(`/usr/local/bin/fn show | grep -w '"rewards":' | sed 's/.$//' | sed 's/^.*: //'`, 
+            async (error, stdout, stderr) => {
+                if (error) {
+                    console.log(`error: ${error.message}`);
+                    return;
+                }
+                if (stderr) {
+                    console.log(`stderr: ${stderr}`);
+                    return;
+                }
+
+                let rewards = Number(stdout) / 100000;
+                gauge.set(rewards);
+
+            })
+    }
+    
+    setInterval(checkRewards, 5000);
+
+}
+
 module.exports = (registry) => {
     setMetricGauge(registry);
     checkValidatorBalance (registry);
     checkValidatorStatus (registry);
+    checkVotingPower (registry);
+    checkAvaliableRewards (registry);
 };
